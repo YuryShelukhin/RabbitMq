@@ -2,40 +2,27 @@
 
 ### Задание 1. Установка RabbitMQ
 
-Используя Vagrant или VirtualBox, создайте виртуальную машину и установите RabbitMQ.
-Добавьте management plug-in и зайдите в веб-интерфейс.
+Используя Vagrant или VirtualBox, создайте виртуальную машину и установите RabbitMQ. Добавьте management plug-in и зайдите в веб-интерфейс.   
 *Итогом выполнения домашнего задания будет приложенный скриншот веб-интерфейса RabbitMQ.*
 
 ---
 
 ### Решение 1.
-1. Установим Docker    
-`sudo apt  install docker-compose`
-Установим стек ELK.  
-`sudo docker-compose up`  
-Через команду `docker ps -a` посмотрим список работающих контенейнеров, определим id elastic.  
-<img src = "img/1-1.png" width = 60%>   
+1. Установим RabbitMQ с помощью контейнеризации.  
+`sudo docker-compose -f docker-compose_simple.yml up`  
+Через команду `docker ps -a` посмотрим список работающих контейнеров.  
+<img src = "img/1-1.png" width = 60%>     
 
-2. Зайдем внутрь контейнера через команду `sudo docker exec -it 01834b15e04d bash` и командой `curl -u elastic:test -X GET 'localhost:9200/_cluster/health?pretty'` проверим конфигурацию (с указанием имени и пароля).  
-<img src = "img/1-2.png" width = 60%>    
-
-Теперь поменяем имя кластера в конфигурационном файле, который прокидывается внутрь контейнера.  
-<img src = "img/1-3.png" width = 60%>    
-<img src = "img/1-4.png" width = 60%>    
-
-4. Перезапустим один контейнер командой `sudo docker-compose restart elasticsearch` и вновь зайдем в него для проверки конфигурации.    
-<img src = "img/1-5.png" width = 60%>
+2. Обратимся к браузеру по адресу: http://192.168.65.135:15672.    
+<img src = "img/1-2.png" width = 60%>         
 
 ---
 
-
 ### Задание 2. Отправка и получение сообщений
 
-Используя приложенные скрипты, проведите тестовую отправку и получение сообщения.
-Для отправки сообщений необходимо запустить скрипт producer.py.
+Используя приложенные скрипты, проведите тестовую отправку и получение сообщения. Для отправки сообщений необходимо запустить скрипт producer.py.
 
-Для работы скриптов вам необходимо установить Python версии 3 и библиотеку Pika.
-Также в скриптах нужно указать IP-адрес машины, на которой запущен RabbitMQ, заменив localhost на нужный IP.
+Для работы скриптов вам необходимо установить Python версии 3 и библиотеку Pika. Также в скриптах нужно указать IP-адрес машины, на которой запущен RabbitMQ, заменив localhost на нужный IP.
 
 ```shell script
 $ pip install pika
@@ -51,19 +38,31 @@ $ pip install pika
 ---
 
 ### Решение 2.
-1. Установим стек ELK.  
-`sudo docker-compose up`  
-Через команду `docker ps -a` посмотрим список работающих контейнейнеров, в том числе Kibana.  
-<img src = "img/2-1.png" width = 60%>  
+1.Установим Python версии 3 и библиотеку Pika.
+`sudo apt install python3-pip
+pip install pika`
 
-2.   Обратимся к браузеру по адресу: http://192.168.65.135:5601/app/dev_tools#/console (или localhost вместо ip).    
-<img src = "img/2-2.png" width = 60%>         
 
-Выполним запрос GET.   
-<img src = "img/2-3.png" width = 60%>  
 
-#### Конфигурационный файл.  
-[конфигурация Kibana](configs/kibana/config.yml)
+1. Создадим точку обмена.  
+<img src = "img/2-1.png" width = 60%>     
+<img src = "img/2-2.png" width = 60%>    
+
+2. Создадим очередь.  
+<img src = "img/2-3.png" width = 60%>     
+<img src = "img/2-4.png" width = 60%>  
+
+3. Дополним информацию в точке обмена, прибиндив очередь.
+<img src = "img/2-5.png" width = 60%>
+<img src = "img/2-6.png" width = 60%>    
+
+4. Создадим сообщения.   
+<img src = "img/2-7.png" width = 60%>
+
+5. Проверим очередь.  
+<img src = "img/2-8.png" width = 60%>
+
+
 
 
 ### Задание 3. Подготовка HA кластера
@@ -103,39 +102,6 @@ $ rabbitmqadmin get queue='hello'
 
 ### Решение 3
 1. Добавим в Docker-compose.yml конфигурацию Nginx:
-   
-Nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx_logs:/var/log/nginx
-    networks:
-      - elk    
-    environment:
-      - NGINX_USER=root
-      - NGINX_ERROR_LOG_FILE=/var/log/nginx/error.log
-      - NGINX_ACCESS_LOG_FILE=/var/log/nginx/access.log 
-    restart: always`
-
-    и добавим volume в Logstash:
-
-`logstash:
-    image: logstash:7.16.2
-    volumes:
-      - ./configs/logstash/config.yml:/usr/share/logstash/config/logstash.yml
-      - ./configs/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml
-      - ./configs/logstash/pipelines:/usr/share/logstash/config/pipelines
-##### - ./nginx_logs:/var/log/nginx`
-
-Проверим, много раз исправим ошибки,в т.ч.:  
-    - версия должна быть одинаковой у всех сервисов;  
-    - настроим разные разрешения у конфиг файлов (777, 640);  
-    - 7-ую версию проще настроить чем 8-ую;  
-    - ищем логи `docker-compose exec logstash tail -n 5 /var/log/nginx/access.log` и т.д.;  
-    - для теста фильтр лучше брать попроще;  
-    - nginx на хосте занимает тот-же порт 80 что и в контейере (systemctl stop...),  
- при запуске получим:  
 <img src = "img/3-1.png" width = 60%>   
 <img src = "img/3-2.png" width = 60%> 
 
