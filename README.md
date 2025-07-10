@@ -38,32 +38,33 @@ $ pip install pika
 ---
 
 ### Решение 2.
-1.Установим Python версии 3 и библиотеку Pika.
-`sudo apt install python3-pip
-pip install pika`
+1. Установим Python версии 3 и библиотеку Pika.  
+`sudo apt install python3-pip`
+`sudo apt install python3.10-venv`  
+`pip install pika`
+2. Создадим виртуальное окружение.
+`python3 -m venv env`
+3.  Для работы в виртуальной среде, активируем её.  
+`source env/bin/activate`
+4. Откроем скрипт-producer и изменим текст сообщения.
+<img src = "img/2-1.png" width = 60%>   
+
+5. Запустим скрипт несколько раз, перед этим запустив контейнер RabbitMQ.
+`python producer_single.py`   
+Не сработало, ошибки.  
+Вновь `pip install pika`.  
+Вновь `python producer_single.py` несколько раз.  
+Посмотрим в веб-интерфейсе очередь под названием hello и сообщения в ней.  
+<img src = "img/2-2.png" width = 60%> 
+<img src = "img/2-3.png" width = 60%> 
+<img src = "img/2-4.png" width = 60%> 
 
 
+6. Запустим второй скрипт consumer.py.
+<img src = "img/2-5.png" width = 60%> 
+<img src = "img/2-6.png" width = 60%>
 
-1. Создадим точку обмена.  
-<img src = "img/2-1.png" width = 60%>     
-<img src = "img/2-2.png" width = 60%>    
-
-2. Создадим очередь.  
-<img src = "img/2-3.png" width = 60%>     
-<img src = "img/2-4.png" width = 60%>  
-
-3. Дополним информацию в точке обмена, прибиндив очередь.
-<img src = "img/2-5.png" width = 60%>
-<img src = "img/2-6.png" width = 60%>    
-
-4. Создадим сообщения.   
-<img src = "img/2-7.png" width = 60%>
-
-5. Проверим очередь.  
-<img src = "img/2-8.png" width = 60%>
-
-
-
+---
 
 ### Задание 3. Подготовка HA кластера
 
