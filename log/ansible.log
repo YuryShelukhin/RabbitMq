@@ -1,0 +1,56 @@
+2025-07-11 23:16:55,930 p=184968 u=yury n=ansible | ERROR! Empty playbook, nothing to do: /home/yury/HW/SHD/RabbitMq/playbook.yaml
+2025-07-11 23:28:15,744 p=188134 u=yury n=ansible | PLAY [Install RabbitMQ server] ********************************************************************************************************
+2025-07-11 23:28:15,808 p=188134 u=yury n=ansible | TASK [Gathering Facts] ****************************************************************************************************************
+2025-07-11 23:34:08,275 p=188134 u=yury n=ansible |  [ERROR]: User interrupted execution
+
+2025-07-11 23:34:17,390 p=189797 u=yury n=ansible | PLAY [Install RabbitMQ server] ******************************************************************************
+2025-07-11 23:34:17,404 p=189797 u=yury n=ansible | TASK [Gathering Facts] **************************************************************************************
+2025-07-11 23:36:39,082 p=189797 u=yury n=ansible |  [ERROR]: User interrupted execution
+
+2025-07-11 23:38:20,986 p=191042 u=yury n=ansible | PLAY [Install RabbitMQ server] ******************************************************************************
+2025-07-11 23:38:21,001 p=191042 u=yury n=ansible | TASK [Gathering Facts] **************************************************************************************
+2025-07-11 23:40:24,686 p=191605 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:40:31,916 p=191042 u=yury n=ansible |  [ERROR]: User interrupted execution
+
+2025-07-11 23:40:36,701 p=191716 u=yury n=ansible | PLAY [Install RabbitMQ server] ******************************************************************************
+2025-07-11 23:40:36,710 p=191716 u=yury n=ansible | TASK [Update repositories cache and install Rabbitmq-server] ************************************************
+2025-07-11 23:45:54,925 p=192954 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:48:09,268 p=191716 u=yury n=ansible | fatal: [rmq-2]: UNREACHABLE! => changed=false 
+  msg: 'Failed to connect to the host via ssh: ssh: Could not resolve hostname rmq-2: Temporary failure in name resolution'
+  unreachable: true
+2025-07-11 23:48:09,308 p=191716 u=yury n=ansible | fatal: [rmq-1]: UNREACHABLE! => changed=false 
+  msg: 'Failed to connect to the host via ssh: ssh: Could not resolve hostname rmq-1: Temporary failure in name resolution'
+  unreachable: true
+2025-07-11 23:48:09,383 p=191716 u=yury n=ansible | PLAY RECAP **************************************************************************************************
+2025-07-11 23:48:09,388 p=191716 u=yury n=ansible | rmq-1                      : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-11 23:48:09,388 p=191716 u=yury n=ansible | rmq-2                      : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-11 23:49:21,225 p=193763 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:49:22,084 p=193777 u=yury n=ansible | PLAY [Install RabbitMQ server] ******************************************************************************
+2025-07-11 23:49:22,113 p=193777 u=yury n=ansible | TASK [Update repositories cache and install Rabbitmq-server] ************************************************
+2025-07-11 23:56:54,844 p=193777 u=yury n=ansible | fatal: [rmq-2]: UNREACHABLE! => changed=false 
+  msg: 'Failed to connect to the host via ssh: ssh: Could not resolve hostname rmq-2: Temporary failure in name resolution'
+  unreachable: true
+2025-07-11 23:56:54,896 p=193777 u=yury n=ansible | fatal: [rmq-1]: UNREACHABLE! => changed=false 
+  msg: 'Failed to connect to the host via ssh: ssh: Could not resolve hostname rmq-1: Temporary failure in name resolution'
+  unreachable: true
+2025-07-11 23:56:55,031 p=193777 u=yury n=ansible | PLAY RECAP **************************************************************************************************
+2025-07-11 23:56:55,035 p=193777 u=yury n=ansible | rmq-1                      : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-11 23:56:55,036 p=193777 u=yury n=ansible | rmq-2                      : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-11 23:57:06,987 p=195704 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:59:33,797 p=196275 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:59:50,254 p=196362 u=yury n=ansible | playbook: playbook.yaml
+2025-07-11 23:59:56,512 p=196391 u=yury n=ansible | PLAY [Install RabbitMQ server] ******************************************************************************
+2025-07-11 23:59:56,543 p=196391 u=yury n=ansible | TASK [Update repositories cache and install Rabbitmq-server] ************************************************
+2025-07-12 00:06:17,223 p=196391 u=yury n=ansible |  [ERROR]: User interrupted execution
+
+2025-07-12 00:06:27,803 p=198041 u=yury n=ansible | [WARNING]: Could not match supplied host pattern, ignoring: rabbitmq
+
+2025-07-12 00:06:27,807 p=198041 u=yury n=ansible | playbook: playbook.yaml
+2025-07-12 00:06:43,849 p=198158 u=yury n=ansible | [WARNING]: Could not match supplied host pattern, ignoring: rabbitmq
+
+2025-07-12 00:06:43,851 p=198158 u=yury n=ansible | PLAY [Install and configure RabbitMQ cluster] ***************************************************************
+2025-07-12 00:06:43,852 p=198158 u=yury n=ansible | skipping: no hosts matched
+2025-07-12 00:06:43,852 p=198158 u=yury n=ansible | PLAY RECAP **************************************************************************************************
+2025-07-12 00:08:34,874 p=198604 u=yury n=ansible | [WARNING]: Could not match supplied host pattern, ignoring: rabbitmq
+
+2025-07-12 00:08:34,876 p=198604 u=yury n=ansible | playbook: playbook.yaml

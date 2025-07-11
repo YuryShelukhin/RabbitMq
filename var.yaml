@@ -1,0 +1,5 @@
+---
+rabbitmq_user: test
+rabbitmq_password : test
+rabbitmq_cluster_name: test-mq
+rabbitmq_cluster_master: rmq-1

@@ -7,7 +7,7 @@
 
 ---
 
-### Решение 1.
+#### Решение 1.
 1. Установим RabbitMQ с помощью контейнеризации.  
 `sudo docker-compose -f docker-compose_simple.yml up`  
 Через команду `docker ps -a` посмотрим список работающих контейнеров.  
@@ -37,12 +37,12 @@ $ pip install pika
 
 ---
 
-### Решение 2.
+#### Решение 2.
 1. Установим Python версии 3 и библиотеку Pika.  
-`sudo apt install python3-pip`
+`sudo apt install python3-pip`  
 `sudo apt install python3.10-venv`  
 `pip install pika`
-2. Создадим виртуальное окружение.
+2. Создадим виртуальное окружение.  
 `python3 -m venv env`
 3.  Для работы в виртуальной среде, активируем её.  
 `source env/bin/activate`
@@ -101,10 +101,37 @@ $ rabbitmqadmin get queue='hello'
 
 ---
 
-### Решение 3
-1. Добавим в Docker-compose.yml конфигурацию Nginx:
-<img src = "img/3-1.png" width = 60%>   
-<img src = "img/3-2.png" width = 60%> 
+#### Решение 3
+1. Создадим кластер из трех нод с помощью контейнеризации.  
+<img src = "img/3-1.png" width = 60%>  
+
+Создадим политику ha-all на все очереди.  
+<img src = "img/3-1-1.png" width = 60%>
+<img src = "img/3-1-2.png" width = 60%>
+<img src = "img/3-1-3.png" width = 60%>
+
+2. Проверим статусы нод кластера.
+`root@rabbitmq1:/# rabbitmqctl cluster_status`  
+<img src = "img/3-2.png" width = 60%>
+<img src = "img/3-3.png" width = 60%>
+<img src = "img/3-4.png" width = 60%>  
+
+`root@rabbitmq2:/# rabbitmqctl cluster_status`
+<img src = "img/3-5.png" width = 60%>
+<img src = "img/3-6.png" width = 60%>
+<img src = "img/3-7.png" width = 60%>
+
+3. C помощью утилиты rabbitqadmin обратимся к очереди hello с разных нод.  
+`root@rabbitmq1:/# rabbitmqadmin -u test -p test get queue='hello'`  
+<img src = "img/3-8.png" width = 60%>  
+
+`root@rabbitmq2:/# rabbitmqadmin -u test -p test get queue='hello'`  
+<img src = "img/3-9.png" width = 60%>     
+
+4. Отключим одну ноду и запустим consumer.py на второй.    
+<img src = "img/3-10.png" width = 60%>    
+<img src = "img/3-11.png" width = 60%> 
+<img src = "img/3-12.png" width = 60%>
 
 ---
 

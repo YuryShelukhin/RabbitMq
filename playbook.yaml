@@ -1,0 +1,57 @@
+---
+- name: Install and configure RabbitMQ cluster
+  hosts: rabbitmq
+  become: true
+  vars:
+    rabbitmq_cookie: "secret_cookie"
+    rabbitmq_cluster_name: "rabbitmq_cluster"
+    rabbitmq_policy: "ha-all"
+  tasks:
+    - name: Set up RabbitMQ apt repository
+      apt_repository:
+        repo: "deb https://dl.bintray.com/rabbitmq/debian {{ ansible_distribution_release }} main"
+        state: present
+        filename: rabbitmq
+
+    - name: Install RabbitMQ
+      apt:
+        name: rabbitmq-server
+        state: latest
+        update_cache: yes
+
+    - name: Stop and disable the RabbitMQ service
+      service:
+        name: rabbitmq-server
+        state: stopped
+        enabled: false
+
+    - name: Add a cookie file
+      copy:
+        dest: "/var/lib/rabbitmq/.erlang.cookie"
+        content: "{{ rabbitmq_cookie }}"
+        mode: "0600"
+        owner: rabbitmq
+        group: rabbitmq
+
+    - name: Start the RabbitMQ service
+      service:
+        name: rabbitmq-server
+        state: started
+        enabled: true
+
+    - name: Wait for RabbitMQ to start
+      wait_for:
+        port: 5672
+        timeout: 60
+
+    - name: Join the RabbitMQ cluster
+      shell: |
+        rabbitmqctl stop_app
+        rabbitmqctl reset
+        rabbitmqctl join_cluster {{ rabbitmq_cluster_name }}@{{ item }}
+        rabbitmqctl start_app
+      with_items: "{{ groups['rabbitmq']|reject('match', inventory_hostname)|join(',') }}"
+
+    - name: Set the ha-all policy
+      shell: |
+        rabbitmqctl set_policy {{ rabbitmq_policy }} "" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
