@@ -146,23 +146,5 @@ $ rabbitmqadmin get queue='hello'
 ---
 
 
-### Решение 4*.
-1. Исправим Logstash.conf:  
-input {
-
-  beats {  
-    port => 5044  
-    host => "0.0.0.0"  
-    client_inactivity_timeout => 300 # Таймаут   неактивных соединений  
-  }  
-}  
-Проверим:  
-<img src = "img/4-1.png" width = 60%>    
-<img src = "img/4-2.png" width = 60%>  
-
-
-#### Конфигурационный файл.  
-[конфигурация Docker-compose](docker-compose.yml)  
-
 
  
